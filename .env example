@@ -1,0 +1,13 @@
+# Broadcast micro service 
+BROADCAST_SERVICE=http://127.0.0.1:8005
+
+# Owner of the clients instance
+# Will be unique - got from the site
+OWNER=2974528d-155d-42ed-aa01-37767a1994f8
+
+# Data files
+CONTENT_PATH=../data-broadcast-admin/content
+
+# Logger
+LOGS_ROOT=./logs
+LOGS_LEVEL=INFO

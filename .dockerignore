@@ -1,0 +1,40 @@
+# Git
+.git
+.gitignore
+.pre-commit-config-yaml
+
+# Env
+.env
+# CI
+# 
+main.py
+
+# Docker
+docker-compose.yml
+Dockerfile
+.docker
+.dockerignore
+
+# Byte-compiled / optimized / DLL files
+**/__pycache__/
+**/*.py[cod]
+
+
+# Unit test / coverage reports
+pytest.ini
+htmlcov/
+.tox/
+.coverage
+.cache
+nosetests.xml
+coverage.xml
+
+# Sphinx documentation
+docs/_build/
+README.md
+
+# Virtual environment
+.dfsrvvenv
+
+# VS Code
+.vscode

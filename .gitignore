@@ -1,0 +1,8 @@
+.pytest_cache/
+**__pycache__/
+.thcltvenv
+.vscode
+.env
+static/
+temp/
+logs/

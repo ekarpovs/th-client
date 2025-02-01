@@ -6,7 +6,7 @@ BROADCAST_SERVICE=http://127.0.0.1:8005
 OWNER=2974528d-155d-42ed-aa01-37767a1994f8
 
 # Data files
-CONTENT_PATH=../data-broadcast-admin/content
+CONTENT_PATH=
 
 # Logger
 LOGS_ROOT=./logs

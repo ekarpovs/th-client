@@ -38,7 +38,7 @@ For this project will be installed:
 
 ### Create virtual environment
 ```bash
-python3 -m venv .dbcltvenv
+python3 -m venv .thcltvenv
 ```
 
 ### Install dependencies
@@ -87,7 +87,7 @@ docker build . --tag ekarpovs/th-client-x64:1.0.0
 ### Publish to the Docker registry
 ```bash
 docker login -u <your-github-username>
-docker push ekarpovs/data-broadcast-clients-aarch64:1.0.0
+docker push ekarpovs/th-client-aarch64:1.0.0
 ``` 
 
 ### Build and publish to the Docker registry the docker file for x64 architecture

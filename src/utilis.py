@@ -30,6 +30,16 @@ def get_auth_data() -> dict:
     }
 
 
+def check_static_path():
+    ''''''
+    project_root = os.getcwd()
+    out_path = f'{project_root}/static/prompter'
+    if not os.path.exists(out_path):
+        os.makedirs(out_path)
+    out_path = f'{project_root}/static/viewer'
+    if not os.path.exists(out_path):
+        os.makedirs(out_path)
+
 async def store_static_file(client_name, file_name: str, content):
     '''stores a static files into static folder'''      
     project_root = os.getcwd()

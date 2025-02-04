@@ -13,6 +13,7 @@ from src import router
 from src.httpx_client import get_client_pack, initialize, ping_broadcast_server
 from src.logger_setup import get_logger
 import src.config as cfg
+from src.utilis import check_static_path
 
 
 @asynccontextmanager
@@ -20,6 +21,7 @@ async def lifespan(app: FastAPI):
     # StartUp
     logger.info("Startup")
     __print_config()
+    check_static_path()
     app.requests_client = initialize()
     await get_client_pack(app.requests_client, 'prompter')
     await get_client_pack(app.requests_client, 'viewer')

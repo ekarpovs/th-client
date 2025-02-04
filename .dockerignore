@@ -21,6 +21,7 @@ Dockerfile
 
 
 # Unit test / coverage reports
+tests/
 pytest.ini
 htmlcov/
 .tox/

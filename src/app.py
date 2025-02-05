@@ -25,8 +25,8 @@ async def lifespan(app: FastAPI):
     app.requests_client = initialize()
     await get_client_pack(app.requests_client, 'prompter')
     await get_client_pack(app.requests_client, 'viewer')
-    # pong = await ping_broadcast_server(app.requests_client)
-    # logger.info(pong)
+    pong = await ping_broadcast_server(app.requests_client)
+    logger.info(pong)
     yield
     # ShutDown
     logger.info("Shutdown")
@@ -72,6 +72,7 @@ def __print_config():
     logger.info("Current configuration:")
     logger.info(f"content: {cfg.content_path}")
     logger.info(f"external_url: {cfg.external_url}")
+    logger.info(f"ui-proxy: {cfg.ui_proxy}")
     logger.info(f"broadcast_service: {cfg.broadcast_service}")
     logger.info(f"logs_root: {cfg.logs_root}")
     logger.info(f"logs_level: {cfg.logs_level}")

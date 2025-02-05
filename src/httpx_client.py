@@ -2,14 +2,18 @@
 Asynchronous http client
 '''
 
+from fastapi.responses import JSONResponse
 from httpx import AsyncClient, ConnectTimeout, Response
 from tenacity import retry, stop_after_attempt, retry_if_exception_type
 
 import src.config as cfg
 from src.utilis import store_static_file
+from src.logger_setup import get_logger
 
 UI_PROXY_URL = cfg.ui_proxy
 BROADCAST_SERVISE_TARGET_URL = cfg.broadcast_service
+
+logger = get_logger(__name__)
 
 
 def initialize() -> AsyncClient:
@@ -20,14 +24,16 @@ def initialize() -> AsyncClient:
 async def get_client_pack(requests_client: AsyncClient, client_name):
     '''loads prompter or viewer from ui proxy, unpack and sore files into the static folder'''
     target_url = f'{UI_PROXY_URL}/{client_name}'
-    prompter_pack = await __send_get_request(requests_client, target_url)
-    content = prompter_pack['pack']['html']
-    await store_static_file(client_name, 'index.html', content)
-    content = prompter_pack['pack']['css']
-    await store_static_file(client_name, 'style.css', content)
-    content = prompter_pack['pack']['js']
-    await store_static_file(client_name, 'main.js', content)
-
+    client_pack = await __send_get_request(requests_client, target_url)
+    if 'pack' in client_pack:
+        content = client_pack['pack']['html']
+        await store_static_file(client_name, 'index.html', content)
+        content = client_pack['pack']['css']
+        await store_static_file(client_name, 'style.css', content)
+        content = client_pack['pack']['js']
+        await store_static_file(client_name, 'main.js', content)
+    else:
+        logger.error(f'get_client_pack for {client_name} error')
 
 async def ping_broadcast_server(requests_client: AsyncClient) -> dict:
     ''''''
@@ -53,8 +59,11 @@ async def __send_get_request(
         requests_client: AsyncClient,
         target_url: str) -> dict:
     ''''''
-    return __response_data(await requests_client.get(url=target_url))
-
+    try: 
+        return __response_data(await requests_client.get(url=target_url))
+    except Exception as e:
+        logger.error(f'__send_get_request {e}')
+        return {}
 
 @retry(
     retry=retry_if_exception_type(ConnectTimeout),

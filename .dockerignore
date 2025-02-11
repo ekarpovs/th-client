@@ -10,6 +10,7 @@
 # CI
 # 
 main.py
+requirements_dev.txt
 
 # Docker
 docker-compose.yml

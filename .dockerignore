@@ -2,9 +2,11 @@
 .git
 .gitignore
 .pre-commit-config-yaml
+.github
 
 # Env
-.env
+.env*
+
 # CI
 # 
 main.py
@@ -35,7 +37,7 @@ docs/_build/
 README.md
 
 # Virtual environment
-.dfsrvvenv
+.thcltvenv
 
 # VS Code
 .vscode

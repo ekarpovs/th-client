@@ -1,7 +1,11 @@
 # Broadcast micro service 
 BROADCAST_SERVICE=http://127.0.0.1:8005
 
-# Owner of the clients instance
+# Owner's type (namesapce)
+# Will be unique - got from the site via registration
+OWNER_TYPE=
+
+# Owner (room) of the clients instance
 # Will be unique - got from the site
 OWNER=2974528d-155d-42ed-aa01-37767a1994f8
 

@@ -25,8 +25,9 @@ async def load_content(name: str) -> dict:
 def get_auth_data() -> dict:
     '''return ws auth data'''
     return {
-        'user': str(uuid.uuid1()),
-        'owner': cfg.owner
+        'owner-type': cfg.owner_type,
+        'owner': cfg.owner,
+        'client': str(uuid.uuid1()),
     }
 
 
@@ -60,8 +61,6 @@ async def __resolve_placeholders(content):
     content = re.sub(pattern, cfg.external_url, original_string)
     pattern = re.compile(r'BROADCAST_SERVICE_URL')
     content = re.sub(pattern, cfg.broadcast_service, content)
-    pattern = re.compile(r'REGISTERED-OWNER')
-    content = re.sub(pattern, cfg.owner, content)
     return content
 
 

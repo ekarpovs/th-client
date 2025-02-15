@@ -7,7 +7,11 @@ OWNER_TYPE=
 
 # Owner (room) of the clients instance
 # Will be unique - got from the site
-OWNER=2974528d-155d-42ed-aa01-37767a1994f8
+OWNER=
+
+# WS options 
+TRANSPORTS=["websocket", "polling"];
+RECONNECTION_ATTEMPTS=5
 
 # Data files
 CONTENT_PATH=

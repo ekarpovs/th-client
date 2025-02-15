@@ -46,6 +46,7 @@ async def redirect_to_broadcast_server(
         data: dict) -> dict:
     ''''''
     target_url = f'{BROADCAST_SERVISE_TARGET_URL}/endpoint'
+    data['owner-type'] = cfg.owner_type
     data['owner'] = cfg.owner
     return await __send_post_request(
         requests_client,

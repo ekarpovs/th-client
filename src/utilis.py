@@ -11,7 +11,7 @@ logger = get_logger(__name__)
 
 
 async def load_content(name: str) -> dict:
-    '''Load content from file'''
+    '''Load content from a file'''
 
     full_name = f'{cfg.content_path}/{name}.json'
     logger.info(full_name)
@@ -22,12 +22,18 @@ async def load_content(name: str) -> dict:
     return data
 
 
-def get_auth_data() -> dict:
-    '''return ws auth data'''
+def get_cfg_data() -> dict:
+    '''return congiguration data'''
     return {
-        'owner-type': cfg.owner_type,
-        'owner': cfg.owner,
-        'client': str(uuid.uuid1()),
+        'bsrvLocator': cfg.broadcast_service,
+        'pathRoot': cfg.path_root,
+        'transports': cfg.transports,
+        'reconnectionAttempts': cfg.reconnectionAttempts,
+        'authData' : {
+            'owner-type': f'/{cfg.owner_type}',
+            'owner': cfg.owner,
+            'client': str(uuid.uuid1()),
+        }
     }
 
 
@@ -59,8 +65,6 @@ async def __resolve_placeholders(content):
     original_string = content
     pattern = re.compile(r'SESSION-GENERATED-URL')
     content = re.sub(pattern, cfg.external_url, original_string)
-    pattern = re.compile(r'BROADCAST_SERVICE_URL')
-    content = re.sub(pattern, cfg.broadcast_service, content)
     return content
 
 

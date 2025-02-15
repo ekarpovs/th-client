@@ -10,7 +10,7 @@ from fastapi import APIRouter, Request
 from fastapi.responses import HTMLResponse
 
 from src.httpx_client import redirect_to_broadcast_server
-from src.utilis import get_auth_data, load_content, load_script
+from src.utilis import get_cfg_data, load_content, load_script
 from src.logger_setup import get_logger
 
 router = APIRouter()
@@ -43,12 +43,12 @@ async def getweb_data(lang):
     return {"content": content_value}
 
 
-@router.get("/auth", tags=["CLIENT AUTH"])
-async def client_auth():
-    '''get data from the file'''
-    auth = get_auth_data()
-    logger.info(f'client auth data {auth}')
-    return auth
+@router.get("/cfg", tags=["CLIENT CONFIG"])
+async def client_congig():
+    '''get configuration data'''
+    cfg = get_cfg_data()
+    logger.info(f'client cfg data {cfg}')
+    return cfg
 
 
 @router.post("/redirect", tags=["REDIRECT"])

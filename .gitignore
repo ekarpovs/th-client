@@ -4,5 +4,6 @@
 .vscode
 .env
 static/
+content/
 temp/
 logs/

@@ -1,5 +1,7 @@
+EXTERNAL_URL=http://127.0.0.1:8011
+
 # Broadcast micro service 
-BROADCAST_SERVICE=http://127.0.0.1:8005
+BROADCAST_SERVICE=http://127.0.0.1:8020
 
 # Owner's type (namesapce)
 # Will be unique - got from the site via registration
@@ -9,12 +11,17 @@ OWNER_TYPE=
 # Will be unique - got from the site
 OWNER=
 
-# WS options 
-TRANSPORTS=["websocket", "polling"];
-RECONNECTION_ATTEMPTS=5
+# WS options
+PATH_ROOT=/ws/socket.io
+TRANSPORTS = ["websocket", "polling"]
+RECONNECTION_ATTEMPTS =  5
+
+
+# UI Proxy
+UI_PROXY=http://127.0.0.1:8012
 
 # Data files
-CONTENT_PATH=
+CONTENT_PATH=content
 
 # Logger
 LOGS_ROOT=./logs

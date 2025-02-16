@@ -54,11 +54,11 @@ pip install -r requirements.txt
 ### Run (localy)
     - development   
 ```bash
-python main.py
+python main.py <ext_url_value>
 ```
     - production   
 ```bash
-EXTERNAL_URL=<value>  python main.py
+EXTERNAL_URL=<ext_url_value>  python main.py
 ```
 
 ### Check from browser

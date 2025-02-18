@@ -25,7 +25,7 @@ async def load_content(name: str) -> dict:
 def get_cfg_data() -> dict:
     '''return congiguration data'''
     return {
-        'bsrvLocator': cfg.broadcast_service,
+        'bsrvLocator': cfg.broadcast_service_ext_url,
         'pathRoot': cfg.path_root,
         'transports': cfg.transports,
         'reconnectionAttempts': cfg.reconnectionAttempts,

@@ -73,6 +73,7 @@ def __print_config():
     logger.info(f"content: {cfg.content_path}")
     logger.info(f"external_url: {cfg.external_url}")
     logger.info(f"broadcast_service: {cfg.broadcast_service}")
+    logger.info(f"broadcast_service_ext_url: {cfg.broadcast_service_ext_url}")
     logger.info(f"owner_type: {cfg.owner_type}")
     logger.info(f"owner: {cfg.owner}")
     logger.info(f"ui_proxy: {cfg.ui_proxy}")

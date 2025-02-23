@@ -20,5 +20,5 @@ if __name__ == "__main__":
         os.environ['BROADCAST_SERVICE'] = sys.argv[2]
     
     # Run the server
-    uvicorn.run("src.app:app", host='0.0.0.0', port=PORT,
+    uvicorn.run("src.app:app", host='127.0.0.1', port=PORT,
                 log_level="info", reload=True)

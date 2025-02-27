@@ -74,10 +74,14 @@ async def __send_post_request(
         target_url: str,
         data: dict) -> dict:
     ''''''
-    return __response_data(await requests_client.post(
-        url=target_url,
-        json=data,
-    ))
+    try: 
+        return __response_data(await requests_client.post(
+            url=target_url,
+            json=data,
+        ))
+    except Exception as e:
+        logger.error(f'__send_post_request {e}')
+        return {}
 
 
 def __response_data(response: Response) -> dict:

@@ -7,6 +7,7 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 
 from src.description import description, title, version, license, contact
 from src import router
@@ -14,7 +15,8 @@ from src.httpx_client import get_client_pack, initialize, ping_broadcast_server
 from src.logger_setup import get_logger
 import src.config as cfg
 from src.utilis import check_static_path
-
+# Admin
+from src.endpoints import pages_router, dash_router, auth_router
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -23,14 +25,15 @@ async def lifespan(app: FastAPI):
     __print_config()
     check_static_path()
     app.requests_client = initialize()
-    await get_client_pack(app.requests_client, 'prompter')
-    await get_client_pack(app.requests_client, 'viewer')
-    pong = await ping_broadcast_server(app.requests_client)
-    logger.info(pong)
+    if not cfg.standalone:
+        await get_client_pack(app.requests_client, 'prompter')
+        await get_client_pack(app.requests_client, 'viewer')
+        pong = await ping_broadcast_server(app.requests_client)
+        logger.info(pong)
     yield
     # ShutDown
     logger.info("Shutdown")
-    # await app.requests_client.aclose()
+    await app.requests_client.aclose()
 
 app = FastAPI(
     lifespan=lifespan,
@@ -55,8 +58,14 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Serve Static Files
+app.mount('/static_adm', StaticFiles(directory='static_adm'), name='static_adm')
+
 app.include_router(router.router)
 
+app.include_router(pages_router, prefix="/adm", tags=["Pages"])
+app.include_router(auth_router, prefix="/adm/auth", tags=["Auth"])
+app.include_router(dash_router, prefix="/adm", tags=["Dashboard"])
 
 @app.get("/", tags=["HELTH"])
 def ping() -> Dict:

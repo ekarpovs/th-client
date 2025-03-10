@@ -23,10 +23,10 @@ async def upload_file(
     request: Request,
     file: UploadFile = File(...)
 ):
-    if file.content_type != 'application/zip':
+    if file.content_type != 'text/plain':
         return templates.TemplateResponse(
             'dashboard.html',
-            {'request': request, 'error': 'Only zip files are allowed'}
+            {'request': request, 'error': 'Only text files are allowed'}
         )
 
     # Check file size

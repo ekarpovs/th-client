@@ -6,9 +6,9 @@ from fastapi.responses import JSONResponse
 from httpx import AsyncClient, ConnectTimeout, Response
 from tenacity import retry, stop_after_attempt, retry_if_exception_type
 
-import src.config as cfg
-from src.utilis import store_static_file
-from src.logger_setup import get_logger
+import src.common.config as cfg
+from src.clients.utilis import store_static_file
+from src.common.logger_setup import get_logger
 
 UI_PROXY_URL = cfg.ui_proxy
 BROADCAST_SERVISE_TARGET_URL = cfg.broadcast_service

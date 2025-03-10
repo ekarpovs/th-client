@@ -5,7 +5,7 @@ import os
 import logging
 from logging.handlers import TimedRotatingFileHandler
 
-import src.config as cfg
+import src.common.config as cfg
 
 
 # Custom filter to filter log records based on severity level

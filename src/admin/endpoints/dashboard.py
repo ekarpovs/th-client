@@ -5,7 +5,7 @@ from fastapi import APIRouter, Request, Depends, HTTPException, status
 from fastapi.responses import HTMLResponse
 from fastapi import File, UploadFile
 
-from src.templates import templates
+from src.admin.templates import templates
 
 router = APIRouter()
 

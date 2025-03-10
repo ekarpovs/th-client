@@ -10,13 +10,13 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
 from src.description import description, title, version, license, contact
-from src import router
-from src.httpx_client import get_client_pack, initialize, ping_broadcast_server
-from src.logger_setup import get_logger
-import src.config as cfg
-from src.utilis import check_static_path
+from src.clients import router
+from src.clients.httpx_client import get_client_pack, initialize, ping_broadcast_server
+from src.common.logger_setup import get_logger
+import src.common.config as cfg
+from src.clients.utilis import check_static_path
 # Admin
-from src.endpoints import pages_router, dash_router, auth_router
+from src.admin.endpoints import pages_router, dash_router, auth_router
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -59,7 +59,7 @@ app.add_middleware(
 )
 
 # Serve Static Files
-app.mount('/static_adm', StaticFiles(directory='static_adm'), name='static_adm')
+app.mount('/static_admin', StaticFiles(directory='static_admin'), name='static_admin')
 
 app.include_router(router.router)
 

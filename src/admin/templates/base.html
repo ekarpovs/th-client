@@ -3,14 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title>UMC</title>
-    <link rel="stylesheet" href="/static_adm/style.css">
+    <link rel="stylesheet" href="/static/style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
     <nav>
         <!-- <a href="/">Home</a> -->
         {% if request.cookies.get('access_token') %}
-            <!-- <a href="/adm/dashboard">Dasboard</a> -->
             <a href="/adm/auth/logout">Logout</a>
         {% else %}
             <a href="/adm/login">Login</a>

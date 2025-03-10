@@ -10,7 +10,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
 from src.description import description, title, version, license, contact
-from src.clients import router
+from src.clients import endpoints
 from src.clients.httpx_client import get_client_pack, initialize, ping_broadcast_server
 from src.common.logger_setup import get_logger
 import src.common.config as cfg
@@ -61,7 +61,7 @@ app.add_middleware(
 # Serve Static Files
 app.mount('/static_admin', StaticFiles(directory='static_admin'), name='static_admin')
 
-app.include_router(router.router)
+app.include_router(endpoints.router)
 
 app.include_router(pages_router, prefix="/adm", tags=["Pages"])
 app.include_router(auth_router, prefix="/adm/auth", tags=["Auth"])

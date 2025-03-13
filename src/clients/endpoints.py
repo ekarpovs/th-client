@@ -9,9 +9,9 @@ from typing import Optional
 from fastapi import APIRouter, Request
 from fastapi.responses import HTMLResponse
 
-from src.httpx_client import redirect_to_broadcast_server
-from src.utilis import get_cfg_data, load_content, load_script
-from src.logger_setup import get_logger
+from src.clients.httpx_client import redirect_to_broadcast_server
+from src.clients.utilis import get_cfg_data, load_content, load_script
+from src.common.logger_setup import get_logger
 
 router = APIRouter()
 

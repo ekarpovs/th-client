@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Upload Content File</h2>
+{% if error %}
+    <p class="error">{{ error }}</p>
+{% endif %}
+{% if message %}
+    <p class="message">{{ message }}</p>
+{% endif %}
+<form action="/adm/upload" method="post" enctype="multipart/form-data">
+    <label for="file">Select a txt file to upload:</label><br>
+    <input type="file" id="file" name="file" accept=".txt" required><br><br>
+    <button type="submit">Upload</button>
+</form>
+{% endblock %}

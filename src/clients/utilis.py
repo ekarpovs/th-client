@@ -4,8 +4,8 @@ import re
 import uuid
 import aiofiles
 
-import src.config as cfg
-from src.logger_setup import get_logger
+import src.common.config as cfg
+from src.common.logger_setup import get_logger
 
 logger = get_logger(__name__)
 

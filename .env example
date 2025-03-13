@@ -14,7 +14,7 @@ OWNER=
 # WS options
 PATH_ROOT=/ws/socket.io
 TRANSPORTS = ["websocket", "polling"]
-RECONNECTION_ATTEMPTS =  5
+RECONNECTION_ATTEMPTS=5
 
 
 # UI Proxy
@@ -26,3 +26,9 @@ CONTENT_PATH=content
 # Logger
 LOGS_ROOT=./logs
 LOGS_LEVEL=INFO
+
+# Upload content files
+MAX_CONTENT_LENGTH=52428800
+
+# Feature flags
+STANDALONE=True

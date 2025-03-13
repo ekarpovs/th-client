@@ -1,11 +1,15 @@
 # src/endpoints/distro.py
 
 import os
-from fastapi import APIRouter, Request, Depends, HTTPException, status
+from fastapi import APIRouter, BackgroundTasks, Request, Depends, HTTPException, status
 from fastapi.responses import HTMLResponse
 from fastapi import File, UploadFile
 
+from src.common.logger_setup import get_logger
+from src.admin.services import convert_file
 from src.admin.templates import templates
+
+logger = get_logger(__name__)
 
 router = APIRouter()
 
@@ -21,6 +25,7 @@ MAX_CONTENT_LENGTH = 50 * 1024 * 1024  # 50 MB
 @router.post('/upload')
 async def upload_file(
     request: Request,
+    background_tasks: BackgroundTasks,
     file: UploadFile = File(...)
 ):
     if file.content_type != 'text/plain':
@@ -39,14 +44,25 @@ async def upload_file(
     # Use secure_filename to prevent directory traversal attacks
     from werkzeug.utils import secure_filename
     filename = secure_filename(file.filename)
-
+    
     # Save the file
-    file_path = os.path.join('content', 'files', filename)
-    with open(file_path, 'wb') as buffer:
+    project_root = os.getcwd()
+    store_path = f'{project_root}/content/files'
+ 
+    if not os.path.exists(store_path):
+        os.makedirs(store_path)
+ 
+    input_file = os.path.join(store_path, filename)
+
+    with open(input_file, 'wb') as buffer:
         buffer.write(await file.read())
 
     # Log the upload action
-    # logger.info(f"Admin {current_user.email} uploaded file: {filename}")
+    logger.info(f"Admin uploaded file: {filename}")
+
+    name, _ = tuple(filename.split('.'))
+    # output_file = os.path.join(content_path, name)
+    background_tasks.add_task(convert_file, input_file, name)
 
     return templates.TemplateResponse(
         'dashboard.html',

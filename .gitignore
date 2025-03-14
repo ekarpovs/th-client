@@ -3,7 +3,7 @@
 .thcltvenv
 .vscode
 .env
-# static/
+static/
 content/
 temp/
 logs/

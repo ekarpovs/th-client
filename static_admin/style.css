@@ -89,6 +89,17 @@ button:hover {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
+.login-section {
+    text-align: center; /* Center-align the content */
+    margin: 20px auto;
+}
+
+.login-section form {
+    display: inline-block; /* Ensure the form doesn't stretch across the page */
+    text-align: left; /* Keep input fields aligned within the form */
+}
+
+
 .upload-section {
     text-align: center; /* Center-align the content */
     margin: 20px auto;

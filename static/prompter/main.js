@@ -1,6 +1,6 @@
 // @ts-nocheck
 // Be interactions
-const THCL_LOCATOR = 'https://th-zero.onrender.com';
+const THCL_LOCATOR = 'http://127.0.0.1:8021';
 
 // Get data from backend
 async function fetchData(lang = 'ru') {

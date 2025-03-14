@@ -11,7 +11,7 @@ from fastapi.staticfiles import StaticFiles
 
 from src.description import description, title, version, license, contact
 from src.clients import endpoints
-from src.clients.httpx_client import get_client_pack, initialize, ping_broadcast_server
+from src.common.httpx_client import initialize, ping_broadcast_server
 from src.common.logger_setup import get_logger
 import src.common.config as cfg
 from src.clients.utilis import check_static_path
@@ -25,11 +25,10 @@ async def lifespan(app: FastAPI):
     __print_config()
     check_static_path()
     app.requests_client = initialize()
-    if not cfg.standalone:
-        await get_client_pack(app.requests_client, 'prompter')
-        await get_client_pack(app.requests_client, 'viewer')
-        pong = await ping_broadcast_server(app.requests_client)
-        logger.info(pong)
+    # await get_client_pack(app.requests_client, 'prompter')
+    # await get_client_pack(app.requests_client, 'viewer')
+    pong = await ping_broadcast_server(app.requests_client)
+    logger.info(pong)
     yield
     # ShutDown
     logger.info("Shutdown")

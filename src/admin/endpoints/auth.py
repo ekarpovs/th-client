@@ -3,7 +3,7 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 
 router = APIRouter()
 
-@router.post('/login')
+@router.post('/login', tags=["AUTH"])
 def login_user(
     request: Request,
     email: str = Form(...),
@@ -21,7 +21,7 @@ def login_user(
     return response
 
 
-@router.get('/logout')
+@router.get('/logout', tags=["AUTH"])
 def logout():
     response = RedirectResponse('/adm', status_code=status.HTTP_302_FOUND)
     response.delete_cookie('access_token')

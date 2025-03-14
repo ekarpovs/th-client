@@ -3,6 +3,7 @@ import json
 import re
 import uuid
 import aiofiles
+from shutil import rmtree
 
 import src.common.config as cfg
 from src.common.logger_setup import get_logger

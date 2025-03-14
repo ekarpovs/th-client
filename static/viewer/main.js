@@ -1,6 +1,6 @@
 // @ts-nocheck
 // Be interactions
-const THCL_LOCATOR = 'https://th-zero.onrender.com';
+const THCL_LOCATOR = 'http://127.0.0.1:8021';
 
 // const BSRV_LOCATOR = 'BROADCAST_SERVICE_URL';
 // const ROOT_PATH = '/ws/socket.io';

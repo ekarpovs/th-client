@@ -1,21 +1,32 @@
 ''''''
 
 import os
+from shutil import rmtree
 import time
 import re
 import json
 
+import src.common.config as cfg
 from src.common.logger_setup import get_logger
 
 logger = get_logger(__name__)
+
+async def clean_content():
+    '''Clean content folder'''
+    logger.info(f'remove folder {cfg.content_path} with content')
+    if os.path.exists(cfg.content_path):
+        rmtree(cfg.content_path)
+
 
 def read_src_file(file_path):
     with open(file_path, 'r', encoding='utf-8') as file:
         return [line.rstrip() for line in file]
 
+
 def save_to_dest_file(data, output_file):
     with open(output_file, 'w', encoding='utf-8') as file:
         json.dump(data, file, ensure_ascii=False, indent=4)
+
 
 def divide_to_chunks(subtile_text):
     """"""

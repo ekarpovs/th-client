@@ -64,7 +64,7 @@ async def __send_get_request(
         return __response_data(await requests_client.get(url=target_url))
     except Exception as e:
         logger.error(f'__send_get_request {e}')
-        return {}
+        return {"error": f'__send_get_request {e}'}
 
 @retry(
     retry=retry_if_exception_type(ConnectTimeout),

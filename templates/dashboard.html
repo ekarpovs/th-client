@@ -1,16 +1,91 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2>Upload Content File</h2>
-{% if error %}
-    <p class="error">{{ error }}</p>
-{% endif %}
-{% if message %}
-    <p class="message">{{ message }}</p>
-{% endif %}
-<form action="/adm/upload" method="post" enctype="multipart/form-data">
-    <label for="file">Select a txt file to upload:</label><br>
-    <input type="file" id="file" name="file" accept=".txt" required><br><br>
-    <button type="submit">Upload</button>
-</form>
+<h2>Admin Dashboard</h2>
+
+<!-- Reusable Result Display -->
+<p id="resultString" class="message">Status</p>
+
+<!-- Button Section -->
+<div class="button-container">
+    <button class="actionButton" data-endpoint="/adm/checksrv" data-result-key="pong">Check Server</button>
+    <button class="actionButton" data-endpoint="/adm/getstatic" data-result-key="message">Get Clients</button>
+    <button class="actionButton" data-endpoint="/adm/cleancont" data-result-key="message">Clean Content</button>
+</div>
+
+<!-- Upload Content Section -->
+<div class="upload-section">
+    <h4>Upload Content File</h4>
+    <form action="/adm/upload" method="post" enctype="multipart/form-data" onsubmit="return handleUpload(event);">
+        <!-- <label for="file">Select a txt file to upload:</label><br> -->
+        <!-- <input type="file" id="file" name="file" accept=".txt" required><br><br> -->
+        <div class="custom-file-upload">
+            <label for="file">Browse...</label>
+            <input type="file" id="file" name="file" accept=".txt">
+            <p id="fileName" class="file-name">No file chosen</p>
+        </div>       
+        <button type="submit">Upload</button>
+    </form>
+</div>
+
+<!-- JavaScript -->
+<script>
+    // Utility function to handle GET requests and update resultString
+    async function fetchData(endpoint, resultKey) {
+        try {
+            const response = await fetch(endpoint);
+            if (response.ok) {
+                const data = await response.json();
+                document.getElementById('resultString').innerText = data[resultKey];
+            } else {
+                document.getElementById('resultString').innerText = 'Error: ' + response.statusText;
+            }
+        } catch (error) {
+            document.getElementById('resultString').innerText = 'Error: ' + error.message;
+        }
+    }
+
+    // Add event listener for action buttons
+    document.querySelectorAll('.actionButton').forEach(button => {
+        button.addEventListener('click', () => {
+            const endpoint = button.getAttribute('data-endpoint');
+            const resultKey = button.getAttribute('data-result-key');
+            fetchData(endpoint, resultKey);
+        });
+    });
+
+    // Add an event listener to update the displayed file name when a file is chosen
+    document.getElementById('file').addEventListener('change', function() {
+        const fileName = this.files[0] ? this.files[0].name : "No file chosen";
+        document.getElementById('fileName').innerText = fileName;
+        document.getElementById('resultString').innerText = 'Staus';
+    });
+
+    // Function to handle upload form submission
+    async function handleUpload(event) {
+        event.preventDefault(); // Prevent default form submission
+        const fileInput = document.getElementById('file');
+        const formData = new FormData();
+        formData.append('file', fileInput.files[0]);
+
+        try {
+            const response = await fetch('/adm/upload', {
+                method: 'POST',
+                body: formData,
+            });
+
+            if (response.ok) {
+                // Try to parse JSON, but fall back to plain text if it's not JSON
+                const data = await response.json().catch(() => response.text());
+                document.getElementById('resultString').innerText = data.message;
+                document.getElementById('fileName').innerText = 'No file chosen';
+            } else {
+                document.getElementById('resultString').innerText = 'Error: ' + response.statusText;
+            }
+        } catch (error) {
+            document.getElementById('resultString').innerText = 'Error: ' + error.message;
+        }
+        return false;
+    }
+</script>
 {% endblock %}

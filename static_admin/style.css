@@ -35,15 +35,14 @@ nav a:hover {
 }
 
 .container {
-    background-color: #FFFFFF; /* Add a white background for contrast */
+    max-width: 800px;
+    margin: 100px auto 20px; /* Automatically center horizontally using `auto` */
+    padding: 20px;
+    background-color: #FFFFFF;
     border: 1px solid #E9ECEF;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    max-width: 800px;
-    margin: 100px auto 20px; /* Centers the content and provides spacing */
 }
-
 
 h1, h2, h4 {
     color: #3A7CA5;
@@ -99,6 +98,34 @@ button:hover {
     text-align: left; /* Keep input fields aligned within the form */
 }
 
+/* Center-align the Dashboard Title */
+.dashboard-title {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #3A7CA5;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 24px;
+}
+
+/* Style Content Management Section */
+.content-title {
+    text-align: center;
+    color: #3A7CA5;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 20px;
+    margin-top: 30px;
+    margin-bottom: 15px;
+}
+
+.content-management {
+    display: flex;
+    flex-direction: column; /* Stack child elements vertically */
+    align-items: flex-start; /* Keep child elements aligned to the left inside this section */
+    gap: 15px; /* Add spacing between elements */
+    margin: 0 auto; /* Center the entire section horizontally */
+    max-width: 200px; /* Ensure the section doesn't stretch beyond the button width */
+}
+
 
 .upload-section {
     text-align: center; /* Center-align the content */
@@ -131,16 +158,11 @@ input[type="file"] {
     display: none; /* Hide the file input */
 }
 
-/* Style the file upload container */
-.custom-file-upload {
-    display: flex; /* Use flexbox for horizontal alignment */
-    align-items: center; /* Align items vertically to the center */
-    gap: 10px; /* Add spacing between the button and the file name */
-}
-
-/* Style the label to look like a button */
-.custom-file-upload label {
+.custom-file-upload label, 
+.content-management button {
     display: inline-block;
+    width: 200px; /* Consistent width for alignment */
+    text-align: center;
     background-color: #F26D5B;
     color: #FFFFFF;
     padding: 10px 20px;
@@ -150,14 +172,26 @@ input[type="file"] {
     font-size: 16px;
     transition: background-color 0.3s ease, transform 0.2s ease;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    margin: 0; /* Reset margins for alignment */
+    box-sizing: border-box; /* Ensure padding doesn't affect button width */
 }
 
-/* Hover effect for label */
-.custom-file-upload label:hover {
+/* Add hover effect to both label and button */
+.custom-file-upload label:hover, 
+.content-management button:hover {
     background-color: #DD5745;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    transform: translateY(-2px); /* Hover lift effect */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Deepen shadow on hover */
 }
+
+
+/* Style the file upload container */
+.custom-file-upload {
+    display: flex; /* Use flexbox for horizontal alignment */
+    align-items: center; /* Align items vertically to the center */
+    gap: 10px; /* Add spacing between the button and the file name */
+}
+
 
 /* Style for the file name */
 .file-name {

@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2>Admin Dashboard</h2>
+<!-- Center-align the Admin Dashboard title -->
+<h2 class="dashboard-title">Admin Dashboard</h2>
 
 <!-- Reusable Result Display -->
 <p id="resultString" class="message">Status</p>
@@ -10,12 +11,11 @@
 <div class="button-container">
     <button class="actionButton" data-endpoint="/adm/checksrv" data-result-key="pong">Check Server</button>
     <button class="actionButton" data-endpoint="/adm/getstatic" data-result-key="message">Get Clients</button>
-    <button class="actionButton" data-endpoint="/adm/cleancont" data-result-key="message">Clean Content</button>
 </div>
 
-<!-- Upload Content Section -->
-<div class="upload-section">
-    <h4>Upload Content File</h4>
+<!-- Content Management Section -->
+<h4 class="content-title">Content Management</h4>
+<div class="content-management">
     <form action="/adm/upload" method="post" enctype="multipart/form-data" onsubmit="return handleUpload(event);">
         <!-- <label for="file">Select a txt file to upload:</label><br> -->
         <!-- <input type="file" id="file" name="file" accept=".txt" required><br><br> -->
@@ -26,6 +26,7 @@
         </div>       
         <button type="submit">Upload</button>
     </form>
+    <button class="actionButton" data-endpoint="/adm/cleancont" data-result-key="message">Clean Content</button>
 </div>
 
 <!-- JavaScript -->

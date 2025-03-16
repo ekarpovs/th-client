@@ -8,7 +8,7 @@ from fastapi import File, UploadFile
 import src.common.config as cfg
 from src.common.httpx_client import initialize, ping_broadcast_server, get_client_pack
 from src.common.logger_setup import get_logger
-from src.admin.services import clean_content, convert_file
+from src.admin.services import check_content, clean_content, convert_file
 from src.admin.templates import templates
 
 logger = get_logger(__name__)
@@ -30,19 +30,42 @@ async def check_srv(request: Request, requests_client = Depends(initialize)):
     return result
 
 
-@router.get('/getstatic', tags=["ADMIN"])
-async def check_srv(request: Request, requests_client = Depends(initialize)):
+@router.get('/start', tags=["ADMIN"])
+async def start(request: Request, requests_client = Depends(initialize)) -> JSONResponse:
     ''''''
-    await get_client_pack(requests_client, 'prompter')
-    await get_client_pack(requests_client, 'viewer')
-    return {"message": "done"}
+    response = {
+            "success": False,
+            "message": 'Show can not be started'
+        }
+    result = check_content()
+    if not result:
+        response['message'] = f'{response["message"]} - please load content'
+        return response
+    
+    result = await get_client_pack(requests_client, 'prompter')
+    if result:
+        result = await get_client_pack(requests_client, 'viewer')
+    if result:
+        response['success'] = True
+        response['message'] = 'Show started successfully'
+    return response
 
+
+@router.get('/stop', tags=["ADMIN"])
+async def stop(request: Request, requests_client = Depends(initialize)):
+    ''''''
+    response = {
+            "success": True,
+            "message": 'Show finished'
+        }
+    # send request to server
+    return response
 
 @router.get('/cleancont', tags=["ADMIN"])
-async def check_srv(request: Request):
+async def clean(request: Request):
     ''''''
-    await clean_content()
-    return {"message": "done"}
+    clean_content()
+    return {"message": "Content deleted"}
 
 
 # Handle the file upload

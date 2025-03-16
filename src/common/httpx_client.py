@@ -32,8 +32,10 @@ async def get_client_pack(requests_client: AsyncClient, client_name):
         await store_static_file(client_name, 'style.css', content)
         content = client_pack['pack']['js']
         await store_static_file(client_name, 'main.js', content)
+        return True
     else:
         logger.error(f'get_client_pack for {client_name} error')
+        return False
 
 async def ping_broadcast_server(requests_client: AsyncClient) -> dict:
     ''''''

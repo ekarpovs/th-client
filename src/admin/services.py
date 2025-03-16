@@ -11,11 +11,17 @@ from src.common.logger_setup import get_logger
 
 logger = get_logger(__name__)
 
-async def clean_content():
+def clean_content():
     '''Clean content folder'''
     logger.info(f'remove folder {cfg.content_path} with content')
     if os.path.exists(cfg.content_path):
         rmtree(cfg.content_path)
+
+
+def check_content():
+    '''Check content folder'''
+    logger.info(f'check folder {cfg.content_path} content')
+    return os.path.exists(cfg.content_path)
 
 
 def read_src_file(file_path):

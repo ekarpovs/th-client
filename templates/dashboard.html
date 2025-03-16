@@ -8,9 +8,10 @@
 <p id="resultString" class="message">Status</p>
 
 <!-- Button Section -->
+<h4 class="content-title">Show Management</h4>
 <div class="button-container">
-    <button class="actionButton" data-endpoint="/adm/checksrv" data-result-key="pong">Check Server</button>
-    <button class="actionButton" data-endpoint="/adm/getstatic" data-result-key="message">Get Clients</button>
+    <button class="actionButton" data-endpoint="/adm/checksrv" data-result-key="pong">Check</button>
+    <button id="startStopButton" class="actionButton" data-endpoint="/adm/start" data-result-key="message">Start</button>
 </div>
 
 <!-- Content Management Section -->
@@ -26,7 +27,7 @@
         </div>       
         <button type="submit">Upload</button>
     </form>
-    <button class="actionButton" data-endpoint="/adm/cleancont" data-result-key="message">Clean Content</button>
+    <button class="actionButton" data-endpoint="/adm/cleancont" data-result-key="message">Clean</button>
 </div>
 
 <!-- JavaScript -->
@@ -53,6 +54,41 @@
             const resultKey = button.getAttribute('data-result-key');
             fetchData(endpoint, resultKey);
         });
+    });
+
+    // Reference to the Start/Stop button
+    const startStopButton = document.getElementById('startStopButton');
+
+    startStopButton.addEventListener('click', async () => {
+        const isStarting = startStopButton.innerText === 'Start'; // Check if the current action is "Start"
+        const endpoint = isStarting ? '/adm/start' : '/adm/stop'; // Use the appropriate endpoint
+
+        try {
+            const response = await fetch(endpoint, {
+                method: 'GET', // Assume a GET request for triggering the start/stop actions
+            });
+
+            if (response.ok) {
+                const data = await response.json(); // Parse the server's response
+                document.getElementById('resultString').innerText = data.message; // Display server message
+
+                // Change the button text only if the server responded successfully
+                if (isStarting && data.success) {
+                    startStopButton.innerText = 'Stop';
+                    startStopButton.setAttribute('data-endpoint', '/adm/stop');
+                } else if (!isStarting && data.success) {
+                    startStopButton.innerText = 'Start';
+                    startStopButton.setAttribute('data-endpoint', '/adm/start');
+                }
+            } else {
+                // Handle non-OK responses
+                const errorMessage = await response.text(); // Retrieve error message from server
+                document.getElementById('resultString').innerText = `Error: ${errorMessage}`;
+            }
+        } catch (error) {
+            // Handle network errors
+            document.getElementById('resultString').innerText = `Error: ${error.message}`;
+        }
     });
 
     // Add an event listener to update the displayed file name when a file is chosen

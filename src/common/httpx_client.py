@@ -43,11 +43,22 @@ async def ping_broadcast_server(requests_client: AsyncClient) -> dict:
     return await __send_get_request(requests_client, target_url)
 
 
+async def stop_all_room_clients(requests_client: AsyncClient) -> dict:
+    ''''''
+    target_url = f'{BROADCAST_SERVISE_TARGET_URL}/shutdown-room'
+    data = {}
+    data['owner-type'] = cfg.owner_type
+    data['owner'] = cfg.owner
+    return await __send_post_request(
+        requests_client,
+        target_url, data)
+
+
 async def redirect_to_broadcast_server(
         requests_client: AsyncClient,
         data: dict) -> dict:
     ''''''
-    target_url = f'{BROADCAST_SERVISE_TARGET_URL}/endpoint'
+    target_url = f'{BROADCAST_SERVISE_TARGET_URL}/redirect'
     data['owner-type'] = cfg.owner_type
     data['owner'] = cfg.owner
     return await __send_post_request(

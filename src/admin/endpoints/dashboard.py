@@ -6,7 +6,7 @@ from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi import File, UploadFile
 
 import src.common.config as cfg
-from src.common.httpx_client import initialize, ping_broadcast_server, get_client_pack
+from src.common.httpx_client import initialize, ping_broadcast_server, get_client_pack, stop_all_room_clients
 from src.common.logger_setup import get_logger
 from src.admin.services import check_content, clean_content, convert_file
 from src.admin.templates import templates
@@ -48,6 +48,7 @@ async def start(request: Request, requests_client = Depends(initialize)) -> JSON
     if result:
         response['success'] = True
         response['message'] = 'Show started successfully'
+    logger.info(response)
     return response
 
 
@@ -59,6 +60,8 @@ async def stop(request: Request, requests_client = Depends(initialize)):
             "message": 'Show finished'
         }
     # send request to server
+    await stop_all_room_clients(requests_client)
+    logger.info(response)
     return response
 
 @router.get('/cleancont', tags=["ADMIN"])

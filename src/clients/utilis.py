@@ -22,6 +22,33 @@ async def load_content(name: str) -> dict:
         data = json.loads(json_data)
     return data
 
+def get_languages_from_content() -> list:
+    '''Get list of languages from the content folder'''
+    languages = []
+    project_root = os.getcwd()
+    content_path = f'{project_root}/content'
+    content_folder = os.fsencode(content_path)
+    # for filename in os.listdir(content_folder):
+    for file in os.listdir(content_folder):
+        filename = os.fsdecode(file)
+        if filename.endswith('.json'):
+            language = build_language_descriptor(filename)
+            languages.append(language)
+    logger.info(f'languages: {languages}')
+    return languages
+        
+
+def build_language_descriptor(filename: str) -> dict:
+    '''build language descriptor from content file name'''
+    labels = cfg.languages
+    lang, _ = filename.split('_')
+    dir = 'ltr'
+    if lang == 'he':
+        dir = 'rtl'
+    label = labels[lang]
+    language = {'code': lang.capitalize(), 'label': label, 'dir': dir}
+    return language
+
 
 def get_cfg_data() -> dict:
     '''return congiguration data'''

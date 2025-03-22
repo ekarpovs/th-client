@@ -10,7 +10,7 @@ from fastapi import APIRouter, Request
 from fastapi.responses import HTMLResponse
 
 from src.common.httpx_client import redirect_to_broadcast_server
-from src.clients.utilis import get_cfg_data, load_content, load_script
+from src.clients.utilis import get_cfg_data, get_languages_from_content, load_content, load_script
 from src.common.logger_setup import get_logger
 
 router = APIRouter()
@@ -62,9 +62,17 @@ async def redirect(request: Request):
 
 @router.get("/status/{data}", tags=["CLIENT STATUS"])
 async def client_status(data):
-    '''get data from the file'''
+    '''get client status'''
     status = 'disconnected'
     if data:
         status = 'connected'
     logger.info(f'client: {data} {status}')
     return {"status": status}
+
+
+@router.get("/languages", tags=["LOAD LANG"])
+async def languages():
+    '''get language'''
+    logger.info('languages')
+    languages = get_languages_from_content()
+    return languages

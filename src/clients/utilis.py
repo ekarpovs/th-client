@@ -33,7 +33,8 @@ def get_languages_from_content() -> list:
         filename = os.fsdecode(file)
         if filename.endswith('.json'):
             language = build_language_descriptor(filename)
-            languages.append(language)
+            if language['label'] !=  None:
+                languages.append(language)
     logger.info(f'languages: {languages}')
     return languages
         
@@ -45,7 +46,9 @@ def build_language_descriptor(filename: str) -> dict:
     dir = 'ltr'
     if lang == 'he':
         dir = 'rtl'
-    label = labels[lang]
+    label = None
+    if lang in labels:
+        label = labels[lang]
     language = {'code': lang.capitalize(), 'label': label, 'dir': dir}
     return language
 

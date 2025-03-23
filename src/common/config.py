@@ -9,10 +9,6 @@ project_root = os.getcwd()
 
 content_path = os.getenv('CONTENT_PATH', 'content')
 content_path = f'{project_root}/{content_path}'
-languages = os.getenv('LANGUAGES', {'ru': 'Russian'})
-if isinstance(languages, str):
-    languages = json.loads(languages)
-
 external_url = os.getenv('EXTERNAL_URL', 'http://127.0.0.1:8011')
 path_root = os.getenv("PATH_ROOT", '/ws/socket.io')
 broadcast_service = os.getenv('BROADCAST_SERVICE', 'http://127.0.0.1:8020')

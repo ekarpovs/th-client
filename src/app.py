@@ -79,7 +79,6 @@ logger = get_logger(__name__)
 def __print_config():
     logger.info("Current configuration:")
     logger.info(f"content: {cfg.content_path}")
-    logger.info(f"languages: {cfg.languages}")
     logger.info(f"external_url: {cfg.external_url}")
     logger.info(f"broadcast_service: {cfg.broadcast_service}")
     logger.info(f"broadcast_service_ext_url: {cfg.broadcast_service_ext_url}")

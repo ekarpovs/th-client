@@ -2,8 +2,10 @@ import os
 import json
 import re
 import uuid
-import aiofiles
 from shutil import rmtree
+
+import aiofiles
+from babel import Locale
 
 import src.common.config as cfg
 from src.common.logger_setup import get_logger
@@ -41,16 +43,24 @@ def get_languages_from_content() -> list:
 
 def build_language_descriptor(filename: str) -> dict:
     '''build language descriptor from content file name'''
-    labels = cfg.languages
-    lang, _ = filename.split('_')
+    lang_code, _ = filename.split('_')
     dir = 'ltr'
-    if lang == 'he':
+    if lang_code == 'he':
         dir = 'rtl'
-    label = None
-    if lang in labels:
-        label = labels[lang]
-    language = {'code': lang.capitalize(), 'label': label, 'dir': dir}
+    try:
+        # Use Babel's Locale to get the language name
+        locale = Locale.parse(lang_code)
+        # language name in English
+        label = locale.get_display_name('en')
+        logger.info(f'label: {label}')
+    except Exception as e:
+        # Handle invalid codes
+        label = None
+        logger.error(f'error: str(e), message: Invalid language code')
+
+    language = {'code': lang_code.capitalize(), 'label': label, 'dir': dir}
     return language
+
 
 
 def get_cfg_data() -> dict:

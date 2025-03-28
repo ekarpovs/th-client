@@ -25,17 +25,19 @@ def check_content():
 
 
 def read_src_file(file_path):
+    ''''''
     with open(file_path, 'r', encoding='utf-8') as file:
         return [line.rstrip() for line in file]
 
 
 def save_to_dest_file(data, output_file):
+    ''''''
     with open(output_file, 'w', encoding='utf-8') as file:
         json.dump(data, file, ensure_ascii=False, indent=4)
 
 
 def divide_to_chunks(subtile_text):
-    """"""
+    ''''''
     chunks = []
     chunk_value = ''
     for line in subtile_text:

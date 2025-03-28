@@ -22,7 +22,7 @@ def upload_form(request: Request):
     return templates.TemplateResponse('dashboard.html', {'request': request})
 
 
-@router.get('/checksrv', tags=["ADMIN"])
+@router.get('/checksrv', tags=["ADMIN-SHOW"])
 async def check_srv(request: Request, requests_client = Depends(initialize)):
     ''''''
     result = await ping_broadcast_server(requests_client)
@@ -30,7 +30,7 @@ async def check_srv(request: Request, requests_client = Depends(initialize)):
     return result
 
 
-@router.get('/start', tags=["ADMIN"])
+@router.get('/start', tags=["ADMIN-SHOW"])
 async def start(request: Request, requests_client = Depends(initialize)) -> JSONResponse:
     ''''''
     response = {
@@ -52,7 +52,7 @@ async def start(request: Request, requests_client = Depends(initialize)) -> JSON
     return response
 
 
-@router.get('/stop', tags=["ADMIN"])
+@router.get('/stop', tags=["ADMIN-SHOW"])
 async def stop(request: Request, requests_client = Depends(initialize)):
     ''''''
     response = {
@@ -64,15 +64,9 @@ async def stop(request: Request, requests_client = Depends(initialize)):
     logger.info(response)
     return response
 
-@router.get('/cleancont', tags=["ADMIN"])
-async def clean(request: Request):
-    ''''''
-    clean_content()
-    return {"message": "Content deleted"}
-
 
 # Handle the file upload
-@router.post('/upload', tags=["ADMIN"])
+@router.post('/upload', tags=["ADMIN-CONTENT"])
 async def upload_file(
     request: Request,
     background_tasks: BackgroundTasks,
@@ -111,10 +105,28 @@ async def upload_file(
     logger.info(f"Admin uploaded file: {filename}")
 
     name, _ = tuple(filename.split('.'))
+
     background_tasks.add_task(convert_file, input_file, name)
 
-    return JSONResponse(content={"message": "File uploaded successfully"})
+    return JSONResponse(content={"message": f"File {name} uploaded successfully"})
     # return templates.TemplateResponse(
     #     'dashboard.html',
     #     {'request': request, 'message': 'File uploaded successfully'}
     # )
+
+
+@router.get('/cleancont', tags=["ADMIN-CONTENT"])
+async def clean(request: Request):
+    ''''''
+    clean_content()
+    return {"message": "Content deleted"}
+
+
+@router.get('/checkcont', tags=["ADMIN-CONTENT"])
+async def start(request: Request) -> JSONResponse:
+    ''''''
+    response = {"success": False}
+    result = check_content()
+    if result:
+        response = {"success": True}
+    return response

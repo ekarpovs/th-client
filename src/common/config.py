@@ -12,7 +12,6 @@ content_path = f'{project_root}/{content_path}'
 external_url = os.getenv('EXTERNAL_URL', 'http://127.0.0.1:8011')
 path_root = os.getenv("PATH_ROOT", '/ws/socket.io')
 broadcast_service = os.getenv('BROADCAST_SERVICE', 'http://127.0.0.1:8020')
-broadcast_service_ext_url = os.getenv('BROADCAST_SERVICE_EXT_URL', 'http://127.0.0.1:8020')
 transports = os.getenv('TRANSPORTS', ['websocket', 'polling'])
 if isinstance(transports, str):
     transports = [i.strip() for i in transports[1:-1].replace('"',"").split(',')]

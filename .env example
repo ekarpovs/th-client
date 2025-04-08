@@ -1,11 +1,15 @@
+# Client
 EXTERNAL_URL=http://127.0.0.1:8011
 
+# UI Proxy
+UI_PROXY=http://127.0.0.1:8012/simple
+
 # Broadcast micro service 
-BROADCAST_SERVICE=http://127.0.0.1:8020
+BROADCAST_SERVICE=http://127.0.0.1:8010
 
 # Owner's type (namesapce)
 # Will be unique - got from the site via registration
-OWNER_TYPE=
+OWNER_TYPE=theaters
 
 # Owner (room) of the clients instance
 # Will be unique - got from the site
@@ -17,9 +21,6 @@ TRANSPORTS = ["websocket", "polling"]
 RECONNECTION_ATTEMPTS=5
 
 
-# UI Proxy
-UI_PROXY=http://127.0.0.1:8012
-
 # Data files
 CONTENT_PATH=content
 
@@ -29,6 +30,3 @@ LOGS_LEVEL=INFO
 
 # Upload content files
 MAX_CONTENT_LENGTH=52428800
-
-# Feature flags
-STANDALONE=True

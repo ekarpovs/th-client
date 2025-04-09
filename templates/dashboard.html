@@ -20,13 +20,14 @@
     <form action="/adm/upload" method="post" enctype="multipart/form-data" onsubmit="return handleFolderUpload(event);">
         <!-- Folder upload configuration -->
         <div class="custom-folder-upload">
+            <p id="folderName" class="file-name">No folder chosen</p> <!-- Display folder name above -->
             <label for="folder">Browse...</label>
             <input type="file" id="folder" name="files" webkitdirectory multiple>
-            <p id="folderName" class="file-name">No folder chosen</p>
-        </div>
-        <button type="submit">Upload Folder</button>
+            <button type="submit">Upload Folder</button>
+            <button type="button" id="cleanButton">Clean</button> <!-- "Clean" button -->
+            </div>
     </form>
-    <button class="actionButton" data-endpoint="/adm/cleancont" data-result-key="message">Clean</button>
+    <!-- <button class="actionButton" data-endpoint="/adm/cleancont" data-result-key="message">Clean</button> -->
 </div>
 
 <!-- JavaScript -->
@@ -122,7 +123,7 @@ async function handleFolderUpload(event) {
         if (response.ok) {
             const data = await response.json();
             document.getElementById("resultString").innerText = data.message;
-            document.getElementById("folderName").innerText = "No folder chosen";
+            // document.getElementById("folderName").innerText = "No folder chosen";
         } else {
             document.getElementById("resultString").innerText = "Error: " + response.statusText;
         }
@@ -134,12 +135,21 @@ async function handleFolderUpload(event) {
 }
 
 // Add event listener to display selected folder contents
+// Update the folder name after upload or display "No folder chosen"
 document.getElementById("folder").addEventListener("change", function () {
     const folderContents = Array.from(this.files)
-        .map((file) => file.name)
+        .map((file) => file.webkitRelativePath.split('/')[0]) // Extract folder name
+        .filter((value, index, self) => self.indexOf(value) === index) // Remove duplicates
         .join(", ");
+
     document.getElementById("folderName").innerText = folderContents || "No folder chosen";
-    document.getElementById("resultString").innerText = "Status";
+    document.getElementById("resultString").innerText = "Status"; // Reset result string
+});
+
+// Clear the folder name when "Clean" is clicked
+document.getElementById("cleanButton").addEventListener("click", function () {
+    document.getElementById("folderName").innerText = "No folder chosen"; // Reset folder name
+    document.getElementById("resultString").innerText = "Cleaned."; // Provide feedback
 });
 </script>
 {% endblock %}

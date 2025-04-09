@@ -163,10 +163,12 @@ label {
 } */
 
 /* Hide the default input[type="file"] */
+/* Hide the default input[type="file"] */
 input[type="file"] {
     display: none; /* Hide the file input */
 }
 
+/* Style for the folder upload label and content management button */
 .custom-folder-upload label, 
 .content-management button {
     display: inline-block;
@@ -193,26 +195,27 @@ input[type="file"] {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Deepen shadow on hover */
 }
 
-
-/* Style the file upload container */
+/* Style the folder upload container */
 .custom-folder-upload {
-    display: flex; /* Use flexbox for horizontal alignment */
-    align-items: center; /* Align items vertically to the center */
-    gap: 10px; /* Add spacing between the button and the file name */
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+    align-items: flex-start; /* Align to the left */
+    gap: 5px; /* Add spacing between folder name and "Browse..." button */
+    margin-bottom: 15px; /* Add spacing below the container */
 }
 
-
-/* Style for the file name */
+/* Style for the file name display */
 .file-name {
     font-family: 'Montserrat', sans-serif;
     font-size: 14px;
     color: #495057;
     white-space: nowrap; /* Prevents file name wrapping */
-    overflow: hidden; /* Ensures long file names are visually truncated */
+    overflow: hidden; /* Ensures long names are visually truncated */
     text-overflow: ellipsis; /* Adds ellipsis (...) for long names */
+    margin: 0; /* Reset margin */
 }
 
-/* Optional focus effect */
+/* Focus effect for input[type="file"] */
 input[type="file"]:focus + label {
     outline: 2px solid #3A7CA5;
 }

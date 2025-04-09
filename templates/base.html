@@ -2,24 +2,29 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>UMC</title>
+    <title>UM</title>
     <link rel="stylesheet" href="/static_admin/style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-</head>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0"></head>
 <body>
     <nav>
-        <!-- <a href="/">Home</a> -->
+        <a href="/adm">
+            <img src="/static_admin/images/logo80.png" alt="UM" class="logo">
+        </a>
         {% if request.cookies.get('access_token') %}
             <a href="/adm/auth/logout">Logout</a>
         {% else %}
-            <a href="/adm/login">Login</a>
+            <!-- <a href="/adm/login">Login</a> -->
+             <span></span>
         {% endif %}
     </nav>
     <div class="container">
         {% block content %}{% endblock %}
     </div>
     <div class="footer">
-        <p>&copy; 2025 UnderstandMe Theater CLient | Contact: info@umwebsite.com</p>
+        <p>&copy; 2025 UnderstandMe Subtitling Admin | Contact: info@umwebsite.com</p>
     </div>
 </body>
 </html>

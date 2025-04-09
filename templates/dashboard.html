@@ -17,15 +17,14 @@
 <!-- Content Management Section -->
 <h4 class="content-title">Content Management</h4>
 <div class="content-management">
-    <form action="/adm/upload" method="post" enctype="multipart/form-data" onsubmit="return handleUpload(event);">
-        <!-- <label for="file">Select a txt file to upload:</label><br> -->
-        <!-- <input type="file" id="file" name="file" accept=".txt" required><br><br> -->
-        <div class="custom-file-upload">
-            <label for="file">Browse...</label>
-            <input type="file" id="file" name="file" accept=".txt">
-            <p id="fileName" class="file-name">No file chosen</p>
-        </div>       
-        <button type="submit">Upload</button>
+    <form action="/adm/upload" method="post" enctype="multipart/form-data" onsubmit="return handleFolderUpload(event);">
+        <!-- Folder upload configuration -->
+        <div class="custom-folder-upload">
+            <label for="folder">Browse...</label>
+            <input type="file" id="folder" name="files" webkitdirectory multiple>
+            <p id="folderName" class="file-name">No folder chosen</p>
+        </div>
+        <button type="submit">Upload Folder</button>
     </form>
     <button class="actionButton" data-endpoint="/adm/cleancont" data-result-key="message">Clean</button>
 </div>
@@ -91,38 +90,56 @@
         }
     });
 
-    // Add an event listener to update the displayed file name when a file is chosen
-    document.getElementById('file').addEventListener('change', function() {
-        const fileName = this.files[0] ? this.files[0].name : "No file chosen";
-        document.getElementById('fileName').innerText = fileName;
-        document.getElementById('resultString').innerText = 'Staus';
-    });
+    // // Add an event listener to update the displayed file name when a file is chosen
+    // document.getElementById('file').addEventListener('change', function() {
+    //     const fileName = this.files[0] ? this.files[0].name : "No file chosen";
+    //     document.getElementById('fileName').innerText = fileName;
+    //     document.getElementById('resultString').innerText = 'Staus';
+    // });
 
-    // Function to handle upload form submission
-    async function handleUpload(event) {
-        event.preventDefault(); // Prevent default form submission
-        const fileInput = document.getElementById('file');
-        const formData = new FormData();
-        formData.append('file', fileInput.files[0]);
+// Function to handle folder upload form submission
+async function handleFolderUpload(event) {
+    event.preventDefault(); // Prevent default form submission
+    const folderInput = document.getElementById("folder");
+    const formData = new FormData();
 
-        try {
-            const response = await fetch('/adm/upload', {
-                method: 'POST',
-                body: formData,
-            });
-
-            if (response.ok) {
-                // Try to parse JSON, but fall back to plain text if it's not JSON
-                const data = await response.json().catch(() => response.text());
-                document.getElementById('resultString').innerText = data.message;
-                document.getElementById('fileName').innerText = 'No file chosen';
-            } else {
-                document.getElementById('resultString').innerText = 'Error: ' + response.statusText;
-            }
-        } catch (error) {
-            document.getElementById('resultString').innerText = 'Error: ' + error.message;
+    // Append each file to the FormData object
+    if (folderInput.files.length > 0) {
+        for (const file of folderInput.files) {
+            formData.append("files", file); // 'files' must match the backend parameter name
         }
+    } else {
+        document.getElementById("resultString").innerText = "Error: No folder selected.";
         return false;
     }
+
+    try {
+        const response = await fetch("/adm/upload", {
+            method: "POST",
+            body: formData,
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            document.getElementById("resultString").innerText = data.message;
+            document.getElementById("folderName").innerText = "No folder chosen";
+        } else {
+            document.getElementById("resultString").innerText = "Error: " + response.statusText;
+        }
+    } catch (error) {
+        document.getElementById("resultString").innerText = "Error: " + error.message;
+    }
+
+    return false;
+}
+
+// Add event listener to display selected folder contents
+document.getElementById("folder").addEventListener("change", function () {
+    const folderContents = Array.from(this.files)
+        .map((file) => file.name)
+        .join(", ");
+    document.getElementById("folderName").innerText = folderContents || "No folder chosen";
+    document.getElementById("resultString").innerText = "Status";
+});
 </script>
 {% endblock %}

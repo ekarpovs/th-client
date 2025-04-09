@@ -1,6 +1,7 @@
 # src/endpoints/distro.py
 
 import os
+from typing import List
 from fastapi import APIRouter, BackgroundTasks, Request, Depends, HTTPException, status
 from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi import File, UploadFile
@@ -65,54 +66,122 @@ async def stop(request: Request, requests_client = Depends(initialize)):
     return response
 
 
-# Handle the file upload
+# # Handle the file upload
+# @router.post('/upload', tags=["ADMIN-CONTENT"])
+# async def upload_file(
+#     request: Request,
+#     background_tasks: BackgroundTasks,
+#     file: UploadFile = File(...)
+# ):
+#     if file.content_type != 'text/plain':
+#         return templates.TemplateResponse(
+#             'dashboard.html',
+#             {'request': request, 'error': 'Only text files are allowed'}
+#         )
+
+#     # Check file size
+#     if file.size > cfg.max_content_size:
+#         return templates.TemplateResponse(
+#             'dashboard.html',
+#             {'request': request, 'error': 'File size exceeds limit of 50 MB'}
+#         )
+    
+#     # Use secure_filename to prevent directory traversal attacks
+#     from werkzeug.utils import secure_filename
+#     filename = secure_filename(file.filename)
+    
+#     # Save the file
+#     project_root = os.getcwd()
+#     store_path = f'{project_root}/content/files'
+ 
+#     if not os.path.exists(store_path):
+#         os.makedirs(store_path)
+ 
+#     input_file = os.path.join(store_path, filename)
+
+#     with open(input_file, 'wb') as buffer:
+#         buffer.write(await file.read())
+
+#     # Log the upload action
+#     logger.info(f"Admin uploaded file: {filename}")
+
+#     name, _ = tuple(filename.split('.'))
+
+#     background_tasks.add_task(convert_file, input_file, name)
+
+#     return JSONResponse(content={"message": f"File {name} uploaded successfully"})
+
+
+# @router.post("/upload", tags=["ADMIN-CONTENT"])
+# async def upload_folder(files: List[UploadFile] = File(...)):
+#     uploaded_files = []
+#     for file in files:
+#         # Save or process each file
+#         file_path = f"static/uploaded/{file.filename}"
+#         with open(file_path, "wb") as f:
+#             content = await file.read()
+#             f.write(content)
+#         uploaded_files.append(file.filename)
+#     return {"message": f"Uploaded {len(uploaded_files)} files successfully: {', '.join(uploaded_files)}"}
+
+# Handle folder upload
 @router.post('/upload', tags=["ADMIN-CONTENT"])
-async def upload_file(
+async def upload_folder(
     request: Request,
     background_tasks: BackgroundTasks,
-    file: UploadFile = File(...)
+    files: List[UploadFile] = File(...)
 ):
-    if file.content_type != 'text/plain':
+    # Check if any files were uploaded
+    if not files:
         return templates.TemplateResponse(
             'dashboard.html',
-            {'request': request, 'error': 'Only text files are allowed'}
-        )
-
-    # Check file size
-    if file.size > cfg.max_content_size:
-        return templates.TemplateResponse(
-            'dashboard.html',
-            {'request': request, 'error': 'File size exceeds limit of 50 MB'}
+            {'request': request, 'error': 'No files selected for upload.'}
         )
     
-    # Use secure_filename to prevent directory traversal attacks
-    from werkzeug.utils import secure_filename
-    filename = secure_filename(file.filename)
-    
-    # Save the file
     project_root = os.getcwd()
-    store_path = f'{project_root}/content/files'
- 
+    store_path = os.path.join(project_root, 'content', 'files')
+
+    # Ensure the storage directory exists
     if not os.path.exists(store_path):
         os.makedirs(store_path)
- 
-    input_file = os.path.join(store_path, filename)
 
-    with open(input_file, 'wb') as buffer:
-        buffer.write(await file.read())
+    uploaded_files = []
+    for file in files:
+        # Validate file type (only allow .txt files)
+        if file.content_type != 'text/plain':
+            return templates.TemplateResponse(
+                'dashboard.html',
+                {'request': request, 'error': f'Invalid file type for {file.filename}. Only text files are allowed.'}
+            )
+        
+        # Validate file size
+        if file.size > cfg.max_content_size:
+            return templates.TemplateResponse(
+                'dashboard.html',
+                {'request': request, 'error': f'File {file.filename} exceeds size limit of 50 MB.'}
+            )
 
-    # Log the upload action
-    logger.info(f"Admin uploaded file: {filename}")
+        # Use secure_filename to prevent directory traversal attacks
+        from werkzeug.utils import secure_filename
+        # Remove folder name
+        filename = os.path.basename(file.filename)
+        filename = secure_filename(filename)
+        
+        # Save the file
+        input_file = os.path.join(store_path, filename)
+        with open(input_file, 'wb') as buffer:
+            buffer.write(await file.read())
+        
+        uploaded_files.append(filename)
 
-    name, _ = tuple(filename.split('.'))
+        # Log the upload action for each file
+        logger.info(f"Admin uploaded file: {filename}")
+        
+        # Process the file (optional background task)
+        name, _ = tuple(filename.split('.'))
+        background_tasks.add_task(convert_file, input_file, name)
 
-    background_tasks.add_task(convert_file, input_file, name)
-
-    return JSONResponse(content={"message": f"File {name} uploaded successfully"})
-    # return templates.TemplateResponse(
-    #     'dashboard.html',
-    #     {'request': request, 'message': 'File uploaded successfully'}
-    # )
+    return JSONResponse(content={"message": f"Uploaded {len(uploaded_files)} files successfully: {', '.join(uploaded_files)}"})
 
 
 @router.get('/cleancont', tags=["ADMIN-CONTENT"])

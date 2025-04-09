@@ -12,7 +12,7 @@ def home(request: Request):
     return templates.TemplateResponse('index.html', {'request': request})
 
 
-# Login Page
-@router.get('/login', response_class=HTMLResponse)
-def login(request: Request):
-    return templates.TemplateResponse('login.html', {'request': request, 'user': None})
+# # Login Page
+# @router.get('/login', response_class=HTMLResponse)
+# def login(request: Request):
+#     return templates.TemplateResponse('login.html', {'request': request, 'user': None})

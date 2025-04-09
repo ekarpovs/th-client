@@ -18,20 +18,28 @@ nav {
     top: 0;
     z-index: 1;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center; /* Align items vertically */
+    justify-content: space-between; /* Space between logo and links */
 }
 
 nav a {
-    color: #FFFFFF;
-    margin-right: 20px;
+    color: white;
     text-decoration: none;
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 500;
-    transition: color 0.3s ease;
+    padding-right: 20px;
+    margin-right: 20px;
 }
 
 nav a:hover {
     color: #F8F9FA;
     text-decoration: underline;
+}
+
+
+nav .logo {
+    height: 30px; /* Adjust height for proper logo size */
+    width: auto; /* Maintain aspect ratio */
+    margin-right: 10px; /* Add spacing between logo and other elements */
 }
 
 .container {
@@ -155,11 +163,13 @@ label {
 } */
 
 /* Hide the default input[type="file"] */
+/* Hide the default input[type="file"] */
 input[type="file"] {
     display: none; /* Hide the file input */
 }
 
-.custom-file-upload label, 
+/* Style for the folder upload label and content management button */
+.custom-folder-upload label, 
 .content-management button {
     display: inline-block;
     width: 200px; /* Consistent width for alignment */
@@ -178,33 +188,34 @@ input[type="file"] {
 }
 
 /* Add hover effect to both label and button */
-.custom-file-upload label:hover, 
+.custom-folder-upload label:hover, 
 .content-management button:hover {
     background-color: #DD5745;
     transform: translateY(-2px); /* Hover lift effect */
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Deepen shadow on hover */
 }
 
-
-/* Style the file upload container */
-.custom-file-upload {
-    display: flex; /* Use flexbox for horizontal alignment */
-    align-items: center; /* Align items vertically to the center */
-    gap: 10px; /* Add spacing between the button and the file name */
+/* Style the folder upload container */
+.custom-folder-upload {
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+    align-items: flex-start; /* Align to the left */
+    gap: 5px; /* Add spacing between folder name and "Browse..." button */
+    margin-bottom: 15px; /* Add spacing below the container */
 }
 
-
-/* Style for the file name */
+/* Style for the file name display */
 .file-name {
     font-family: 'Montserrat', sans-serif;
     font-size: 14px;
     color: #495057;
     white-space: nowrap; /* Prevents file name wrapping */
-    overflow: hidden; /* Ensures long file names are visually truncated */
+    overflow: hidden; /* Ensures long names are visually truncated */
     text-overflow: ellipsis; /* Adds ellipsis (...) for long names */
+    margin: 0; /* Reset margin */
 }
 
-/* Optional focus effect */
+/* Focus effect for input[type="file"] */
 input[type="file"]:focus + label {
     outline: 2px solid #3A7CA5;
 }

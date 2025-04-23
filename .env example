@@ -2,7 +2,7 @@
 EXTERNAL_URL=http://127.0.0.1:8011
 
 # UI Proxy
-UI_PROXY=http://127.0.0.1:8012/simple
+UI_PROXY=http://127.0.0.1:8012
 
 # Broadcast micro service 
 BROADCAST_SERVICE=http://127.0.0.1:8010

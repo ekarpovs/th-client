@@ -10,7 +10,7 @@ import src.common.config as cfg
 from src.clients.utilis import store_static_file
 from src.common.logger_setup import get_logger
 
-UI_PROXY_URL = cfg.ui_proxy
+UI_PROXY_URL = f'{cfg.ui_proxy}/clients/simple'
 BROADCAST_SERVISE_TARGET_URL = cfg.broadcast_service
 
 logger = get_logger(__name__)

@@ -18,16 +18,25 @@ router = APIRouter()
 logger = get_logger(__name__)
 
 
-@router.get("/app/{page}", tags=["LOAD"])
-@router.get("/app/{page}/{script}", tags=["LOAD"])
-async def get_script(page: str, script: Optional[str] = 'index.html'):
+@router.get("/prompter", tags=["LOAD PROMPTER"])
+@router.get("/prompter/{script}", tags=["LOAD PROMPTER"])
+async def get_prompter_script(script: Optional[str] = 'index.html'):
     '''load html page and scripts'''
-    logger.info(f'get_script - {page} - {script}')
-    if page != 'viewer' and page != 'prompter':
-        logger.error('wrong url')
-        return {'error': 'wrong url'}
+    logger.info(f'get_prompter_script - {script}')
 
-    content = await load_script(page, script)
+    content = await load_script('prompter', script)
+
+    content_type, _ = guess_type(script)
+    return HTMLResponse(content, media_type=content_type)
+
+
+@router.get("/viewer", tags=["LOAD VIEWER"])
+@router.get("/viewer/{script}", tags=["LOAD VIEWER"])
+async def get_viewer_script(script: Optional[str] = 'index.html'):
+    '''load html page and scripts'''
+    logger.info(f'get_viewer_script - {script}')
+
+    content = await load_script('viewer', script)
 
     content_type, _ = guess_type(script)
     return HTMLResponse(content, media_type=content_type)

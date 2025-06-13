@@ -87,6 +87,10 @@ def check_static_path():
     out_path = f'{project_root}/static/viewer'
     if not os.path.exists(out_path):
         os.makedirs(out_path)
+    out_path = f'{project_root}/static/auditorium'
+    if not os.path.exists(out_path):
+        os.makedirs(out_path)
+
 
 async def store_static_file(client_name, file_name: str, content):
     '''stores a static files into static folder'''      
@@ -129,6 +133,6 @@ async def __load_html_css(client, script):
 
 async def load_script(page, script):
     ''''''
-    if script == 'prompter.js' or script == 'viewer.js':
+    if script == 'prompter.js' or script == 'viewer.js' or script == 'auditorium.js':
         return await __load_js(page)
     return await __load_html_css(page, script)

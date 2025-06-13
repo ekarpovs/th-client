@@ -22,7 +22,7 @@ def initialize() -> AsyncClient:
 
 
 async def get_client_pack(requests_client: AsyncClient, client_name):
-    '''loads prompter or viewer from ui proxy, unpack and sore files into the static folder'''
+    '''loads clients from ui proxy, unpack and sore files into the static folder'''
     target_url = f'{UI_PROXY_URL}/{client_name}'
     client_pack = await __send_get_request(requests_client, target_url)
     if 'pack' in client_pack:

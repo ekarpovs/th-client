@@ -42,6 +42,18 @@ async def get_viewer_script(script: Optional[str] = 'index.html'):
     return HTMLResponse(content, media_type=content_type)
 
 
+@router.get("/auditorium", tags=["LOAD AUDITORIUM"])
+@router.get("/auditorium/{script}", tags=["LOAD AUDITORIUM"])
+async def get_auditorium_script(script: Optional[str] = 'index.html'):
+    '''load html page and scripts'''
+    logger.info(f'get_auditorium_script - {script}')
+
+    content = await load_script('auditorium', script)
+
+    content_type, _ = guess_type(script)
+    return HTMLResponse(content, media_type=content_type)
+
+
 @router.get("/webdata/{lang}", tags=["LOAD DATA"])
 async def getweb_data(lang):
     '''get data from the file'''

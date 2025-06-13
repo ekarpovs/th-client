@@ -47,6 +47,8 @@ async def start(request: Request, requests_client = Depends(initialize)) -> JSON
     if result:
         result = await get_client_pack(requests_client, 'viewer')
     if result:
+        result = await get_client_pack(requests_client, 'auditorium')
+    if result:
         response['success'] = True
         response['message'] = 'Show started successfully'
     logger.info(response)
